@@ -5,21 +5,23 @@ import { Card } from "primereact/card";
 import { Button } from "primereact/button";
 import { Link } from "react-router-dom";
 
-const ListBeers = () => {
+interface ListBeersProps {
+  idBrewerie?: number;
+}
+
+const ListBeers = ({ idBrewerie }: ListBeersProps) => {
   const [beers, setBeers] = useState<BeerInterface[]>([]);
   const [beersService] = useState(new BeerService());
 
   useEffect(() => {
-    const fetchBeers = async () => {
-      try {
-        const beers = await beersService.findAllBeers();
-        console.log(beers);
-        setBeers(beers);
-      } catch (error) {
-        console.error("Error fetching beers:", error);
+    beersService.findAllBeers().then((data) => {
+      if (idBrewerie) {
+        const beer = data.filter((b) => b.id_brewerie === idBrewerie);
+        setBeers(beer);
+      } else {
+        setBeers(data);
       }
-    };
-    fetchBeers();
+    });
   }, [beersService]);
   const header = (beer: BeerInterface) => {
     return <img alt={beer.name} src="/public/assets/picture_big/beer-1.jpg" />;
