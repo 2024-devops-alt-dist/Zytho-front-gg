@@ -1,24 +1,34 @@
 import { useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 import BeerInterface from "../../entity/BeerInterface";
 import BeerService from "../../services/BeerService";
 import { Button } from "primereact/button";
+import BrewerieService from "../../services/BrewerieService";
+import BrewerieInterface from "../../entity/BrewerieInterface";
 
 const DetailBeer = () => {
   const { id } = useParams();
   const [beer, setBeer] = useState<BeerInterface>();
+  const [brewerie, setBrewerie] = useState<BrewerieInterface>();
+
   const [beersService] = useState(new BeerService());
+  const [brewerieService] = useState(new BrewerieService());
 
   useEffect(() => {
     const fetchBeer = async () => {
       try {
         const beer = await beersService.findByIdBeer(Number(id));
         setBeer(beer);
+        const brewerie = await brewerieService.findByIdBrewerie(
+          beer.id_brewerie
+        );
+        setBrewerie(brewerie);
       } catch (error) {
         console.log(error);
       }
     };
     fetchBeer();
+    console.log(brewerie);
   }, [beersService, id]);
 
   return (
@@ -57,7 +67,9 @@ const DetailBeer = () => {
                 </div>
                 <div>
                   <h2 className="text-gray-700 font-semibold">Brasserie</h2>
-                  <p className="text-gray-600">{beer.id_brewerie}</p>
+                  <Link to={""}>
+                    <p className="text-gray-600">{brewerie?.name}</p>
+                  </Link>
                 </div>
                 <div>
                   <h2 className="text-gray-700 font-semibold">Prix</h2>
