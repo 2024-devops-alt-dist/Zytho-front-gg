@@ -25,7 +25,7 @@ const DetailBrewerie = () => {
 
   return (
     brewerie && (
-      <div className="min-h-screen bg-gray-100 flex flex-col items-center justify-center py-10 px-4">
+      <div className="min-h-screen flex flex-col items-center justify-center py-10 px-4">
         <CardBrewerie brewerie={brewerie} element="detail" />
         <ListBeers idBrewerie={brewerie.id_brewerie} />
       </div>

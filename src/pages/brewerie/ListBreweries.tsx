@@ -1,8 +1,8 @@
 import { useEffect, useState } from "react";
-import { Link } from "react-router-dom";
 import BrewerieService from "../../services/BrewerieService";
 import BrewerieInterface from "../../entity/BrewerieInterface";
 import CardBrewerie from "./CardBrewerie";
+import Button from "../../components/Button";
 
 const ListBreweries = () => {
   const [breweries, setBreweries] = useState<BrewerieInterface[]>([]);
@@ -30,10 +30,8 @@ const ListBreweries = () => {
             return (
               <div>
                 <CardBrewerie brewerie={brewerie} />
-                <div className="mt-6">
-                  <Link to={`/breweries/${brewerie.id_brewerie}`}>
-                    <button className="button-active">Détails</button>
-                  </Link>
+                <div className="mt-6 w-[60%] m-auto">
+                  <Button path={`/breweries/${brewerie.id_brewerie}`} />
                 </div>
               </div>
             );
