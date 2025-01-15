@@ -1,6 +1,7 @@
 import BeerInterface from "../../../entity/BeerInterface";
 import TableDataBeer from "./TableDataBeer";
 import Button from "../../../components/Button";
+import Detailingredient from "./DetailIngredient";
 
 interface CardBeerProps {
   beer: BeerInterface;
@@ -32,6 +33,7 @@ const CardBeer = ({ beer, element = "card" }: CardBeerProps) => {
           consequatur ipsam atque minus autem quod, facere commodi? Et,
           pariatur? Alias.
         </p>
+        {element === "detail" && <Detailingredient idBeer={beer.id_beer} />}
         <div className="mt-6 w-full">
           <Button
             path={element === "card" ? `/beers/${beer.id_beer}` : "/"}
