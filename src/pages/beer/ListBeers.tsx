@@ -26,7 +26,7 @@ const ListBeers = ({ idBrewerie }: ListBeersProps) => {
       <div className="flex flex-col justify-content-center items-center gap-10 w-[80%]">
         {beers &&
           beers.map((beer: BeerInterface) => {
-            return <CardBeer beer={beer} />;
+            return <CardBeer beer={beer} key={beer.id_beer} />;
           })}
       </div>
     </>

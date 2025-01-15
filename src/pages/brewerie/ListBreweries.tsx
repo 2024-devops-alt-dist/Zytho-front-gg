@@ -28,7 +28,7 @@ const ListBreweries = () => {
         {breweries &&
           breweries.map((brewerie: BrewerieInterface) => {
             return (
-              <div>
+              <div key={brewerie.id_brewerie}>
                 <CardBrewerie brewerie={brewerie} />
                 <div className="mt-6 w-[60%] m-auto">
                   <Button path={`/breweries/${brewerie.id_brewerie}`} />

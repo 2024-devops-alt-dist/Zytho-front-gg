@@ -10,7 +10,7 @@ const CardBrewerie = ({
   element: positionTitle = "card",
 }: CardBrewerieProps) => {
   return (
-    <div>
+    <div key={brewerie.id_brewerie}>
       <div>
         {positionTitle === "detail" && (
           <h3 className="text-3xl mb-6 tracking-wide">{brewerie.name}</h3>

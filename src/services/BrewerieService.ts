@@ -16,8 +16,6 @@ class BrewerieService {
   ): Promise<BrewerieInterface> {
     try {
       const resp = await axios.get("/api/brewerie/" + idBrewerie);
-      console.log(resp.data);
-
       return resp.data;
     } catch {
       throw new Error("Erreur lors de la récupération des bières.");
