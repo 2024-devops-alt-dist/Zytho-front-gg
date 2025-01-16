@@ -1,7 +1,8 @@
 import { useEffect, useState } from "react";
 import { Dropdown, DropdownChangeEvent } from "primereact/dropdown";
-import BeerInterface from "../../../entity/BeerInterface";
-import BrewerieInterface from "../../../entity/BrewerieInterface";
+import BeerInterface from "../../../../entity/BeerInterface";
+import BrewerieInterface from "../../../../entity/BrewerieInterface";
+import { CategoryInterface } from "../../../../entity/CategoryInterface";
 
 interface MultiSelectProps<T> {
   sendId: (id: number | undefined) => void;
@@ -10,7 +11,7 @@ interface MultiSelectProps<T> {
 }
 
 export default function MultiSelect<
-  T extends BrewerieInterface | BeerInterface
+  T extends BrewerieInterface | BeerInterface | CategoryInterface
 >({ sendId: sendId, service, label }: MultiSelectProps<T>) {
   const [selectedObject, setSelectedObject] = useState<T>();
 
@@ -27,9 +28,11 @@ export default function MultiSelect<
       <Dropdown
         value={selectedObject}
         onChange={(e: DropdownChangeEvent) => {
-          sendId(e.value.id_brewerie);
+          sendId(
+            e.value.id_brewerie ? e.value.id_brewerie : e.value.id_category
+          );
           setSelectedObject(e.value);
-          console.log(e.value.id_brewerie);
+          console.log(e.value.id_brewerie, e.value.id_category);
         }}
         options={objects}
         optionLabel="name"
