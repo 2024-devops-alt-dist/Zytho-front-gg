@@ -37,7 +37,7 @@ const CardBeer = ({ beer, element = "card" }: CardBeerProps) => {
         <div className="mt-6 w-full">
           <Button
             path={element === "card" ? `/beers/${beer.id_beer}` : "/"}
-            element={element !== "card" ? "detail" : "card"}
+            labelButton={element !== "card" ? "Acheter" : "Détails"}
           />
         </div>
       </div>

@@ -31,7 +31,10 @@ const ListBreweries = () => {
               <div key={brewerie.id_brewerie}>
                 <CardBrewerie brewerie={brewerie} />
                 <div className="mt-6 w-[60%] m-auto">
-                  <Button path={`/breweries/${brewerie.id_brewerie}`} />
+                  <Button
+                    path={`/breweries/${brewerie.id_brewerie}`}
+                    labelButton="Détails"
+                  />
                 </div>
               </div>
             );

@@ -1,15 +1,16 @@
 import { Link } from "react-router-dom";
 
 interface ButtonProps {
-  path: string;
-  element?: "card" | "detail";
+  path?: string;
+  labelButton: string;
+  onClick?: () => void;
 }
 
-const Button = ({ path, element = "card" }: ButtonProps) => {
+const Button = ({ path, labelButton: element, onClick }: ButtonProps) => {
   return (
-    <Link to={path}>
-      <button className="button-active w-full">
-        {element === "card" ? "Détails" : "Acheter"}
+    <Link to={path ? path : "/"}>
+      <button onClick={onClick} className="button-active w-full">
+        {element}
       </button>
     </Link>
   );
