@@ -21,6 +21,18 @@ class BeerService {
       throw new Error("Erreur lors de la récupération des bières.");
     }
   }
+
+  public async updateBeer(
+    idBeer: number,
+    updateBeer: Partial<BeerInterface>
+  ): Promise<BeerInterface> {
+    try {
+      const resp = await axios.patch("/api/beers/" + idBeer, updateBeer);
+      return resp.data;
+    } catch {
+      throw new Error("Erreur lors de la mise à jour de la bière.");
+    }
+  }
 }
 
 export default BeerService;
