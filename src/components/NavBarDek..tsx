@@ -1,4 +1,5 @@
 import { Link } from "react-router-dom";
+import DialogAdmin from "./DialogAdmin";
 
 function NavBarDek() {
   return (
@@ -12,6 +13,9 @@ function NavBarDek() {
         </li>
         <li>
           <Link to={"/breweries"}>Liste des Brasserie</Link>
+        </li>
+        <li>
+          <DialogAdmin />
         </li>
       </ul>
     </nav>

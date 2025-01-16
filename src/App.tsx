@@ -11,6 +11,7 @@ import ListBreweries from "./pages/brewerie/ListBreweries";
 import NavBar from "./components/NavBar";
 import DetailBrewerie from "./pages/brewerie/DetailBrewerie";
 import Footer from "./components/Footer";
+import Admin from "./pages/admin/Admin";
 
 function App() {
   return (
@@ -23,6 +24,7 @@ function App() {
           <Route path="/breweries/:id" element={<DetailBrewerie />} />
           <Route path="/beers" element={<ListBeers />} />
           <Route path="/beers/:id" element={<DetailBeer />} />
+          <Route path="/admin" element={<Admin />} />
         </Routes>
         <Footer />
       </Router>
