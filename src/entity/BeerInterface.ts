@@ -3,11 +3,12 @@ export default interface BeerInterface {
   id_brewerie: number;
   id_category: number;
   id_picture: number;
+  name: string;
   abv: number;
   color: string;
-  created_at: Date;
   description: string;
-  name: string;
   price: number;
+  type: "beer";
+  created_at: Date;
   updated_at: Date;
 }
