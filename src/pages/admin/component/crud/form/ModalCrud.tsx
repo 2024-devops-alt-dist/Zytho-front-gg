@@ -1,10 +1,11 @@
 import { useState } from "react";
-import BeerInterface from "../../../../entity/BeerInterface";
-import BrewerieInterface from "../../../../entity/BrewerieInterface";
-import BrewerieService from "../../../../services/BrewerieService";
+import BeerInterface from "../../../../../entity/BeerInterface";
+import BrewerieInterface from "../../../../../entity/BrewerieInterface";
+import BrewerieService from "../../../../../services/BrewerieService";
 import MultiSelect from "./MultiSelect";
-import { CategoryInterface } from "../../../../entity/CategoryInterface";
-import CategoryService from "../../../../services/CategoryService";
+import { CategoryInterface } from "../../../../../entity/CategoryInterface";
+import CategoryService from "../../../../../services/CategoryService";
+import { returnIdObjectType } from "../../../../../utils/utils";
 
 interface ModalCrudProps<T> {
   type: "add" | "edit" | "delete";
@@ -16,7 +17,9 @@ interface ModalCrudProps<T> {
   onDelete: (id_brewerie: number) => void;
 }
 
-const ModalCrud = <T extends BeerInterface | BrewerieInterface>({
+const ModalCrud = <
+  T extends BeerInterface | BrewerieInterface | CategoryInterface
+>({
   type,
   object: object,
   label,
@@ -25,12 +28,6 @@ const ModalCrud = <T extends BeerInterface | BrewerieInterface>({
   onEdit,
   onDelete,
 }: ModalCrudProps<T>) => {
-  function isBeerInterface(
-    obj: BeerInterface | BrewerieInterface
-  ): obj is BeerInterface {
-    return "id_beer" in obj; // Vérifie si "id_beer" existe
-  }
-
   const [form, setForm] = useState<T>(() => {
     if (object) {
       return object;
@@ -48,11 +45,13 @@ const ModalCrud = <T extends BeerInterface | BrewerieInterface>({
           name: "",
           price: 0,
           updated_at: new Date(),
+          type: "beer",
         } as T;
-      } else {
+      } else if (label === "brasserie") {
         return {
           name: "",
           country: "",
+          type: "brewerie",
           created_at: new Date(),
           updated_at: new Date(),
         } as T;
@@ -75,7 +74,6 @@ const ModalCrud = <T extends BeerInterface | BrewerieInterface>({
       onEdit(form as T);
     }
   };
-
   return (
     <div className="fixed inset-0 bg-gray-500 bg-opacity-50 flex items-center justify-center">
       <div className="bg-white rounded-lg shadow-lg w-1/3">
@@ -101,7 +99,7 @@ const ModalCrud = <T extends BeerInterface | BrewerieInterface>({
                 required
               />
             </div>
-            {isBeerInterface(form) ? (
+            {form.type === "beer" && (
               <>
                 <div className="mb-4">
                   <label className="block text-sm font-medium text-gray-700">
@@ -142,7 +140,8 @@ const ModalCrud = <T extends BeerInterface | BrewerieInterface>({
                   />
                 </div>
               </>
-            ) : (
+            )}
+            {form.type === "brewerie" && (
               <div className="mb-4">
                 <label className="block text-sm font-medium text-gray-700">
                   Pays
@@ -158,7 +157,7 @@ const ModalCrud = <T extends BeerInterface | BrewerieInterface>({
               </div>
             )}
             <div>
-              {type === "add" && isBeerInterface(form) && (
+              {type === "add" && form.type === "beer" && (
                 <>
                   <MultiSelect<BrewerieInterface>
                     service={BrewerieService}
@@ -216,14 +215,9 @@ const ModalCrud = <T extends BeerInterface | BrewerieInterface>({
               </button>
               <button
                 type="button"
-                onClick={() =>
-                  object &&
-                  onDelete(
-                    isBeerInterface(object)
-                      ? object.id_beer
-                      : object.id_brewerie
-                  )
-                }
+                onClick={() => {
+                  if (object) onDelete(returnIdObjectType(object));
+                }}
                 className="px-4 py-2 text-white bg-red-500 rounded-md"
               >
                 Supprimer

@@ -1,28 +1,34 @@
 import { useEffect, useState } from "react";
 import BeerInterface from "../../../../entity/BeerInterface";
-import ModalCrud from "./ModalCrud";
+import ModalCrud from "./form/ModalCrud";
 import { ServiceInterface } from "../../../../entity/ServiceInterface";
 import BrewerieInterface from "../../../../entity/BrewerieInterface";
+import { CategoryInterface } from "../../../../entity/CategoryInterface";
+import FormCrud from "./form/FormCrud";
+import { returnIdObjectType } from "../../../../utils/utils";
 
 interface CrudBeerProps<T> {
-  label: string;
+  label: "brasserie" | "bières" | "categorie";
   service: new () => ServiceInterface<T>;
   objects: T[];
   changeObjects: (objects: T[]) => void;
 }
 
-const CrudDataValue = <T extends BeerInterface | BrewerieInterface>({
+const CrudDataValue = <
+  T extends BeerInterface | BrewerieInterface | CategoryInterface
+>({
   label,
   service,
   objects,
   changeObjects,
 }: CrudBeerProps<T>) => {
-  const [selectedObject, setSelectedObject] = useState<T | null>(null);
   const [instanceService] = useState(new service());
+
+  const [selectedObject, setSelectedObject] = useState<T | null>(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [modalType, setModalType] = useState<
     "add" | "edit" | "delete" | undefined
-  >(undefined); // Limite les valeurs à "add", "edit" ou "delete"
+  >(undefined);
 
   useEffect(() => {
     instanceService
@@ -35,19 +41,15 @@ const CrudDataValue = <T extends BeerInterface | BrewerieInterface>({
       });
   }, [instanceService]);
 
-  function isBeerInterface(obj: any): obj is BeerInterface {
-    return "id_beer" in obj; // Vérifie si "id_beer" existe
-  }
+  const closeModal = () => {
+    setIsModalOpen(false);
+    setSelectedObject(null);
+  };
 
   const openModal = (type: "add" | "edit" | "delete", obj: T | null = null) => {
     setModalType(type);
     setSelectedObject(obj);
     setIsModalOpen(true);
-  };
-
-  const closeModal = () => {
-    setIsModalOpen(false);
-    setSelectedObject(null);
   };
 
   const handleAddBeer = (obj: T) => {
@@ -66,25 +68,14 @@ const CrudDataValue = <T extends BeerInterface | BrewerieInterface>({
 
   const handleEditBeer = (updatedObject: T) => {
     instanceService
-      .update(
-        isBeerInterface(updatedObject)
-          ? updatedObject.id_beer
-          : updatedObject.id_brewerie,
-        updatedObject
-      )
+      .update(returnIdObjectType(updatedObject), updatedObject)
       .then(() => {
         // Mettre à jour les objets dans la liste
         changeObjects(
           objects.map((obj) => {
-            if (isBeerInterface(obj) && isBeerInterface(updatedObject)) {
-              return obj.id_beer === updatedObject.id_beer
-                ? updatedObject
-                : obj;
-            } else {
-              return obj.id_brewerie === updatedObject.id_brewerie
-                ? updatedObject
-                : obj;
-            }
+            return returnIdObjectType(obj) === returnIdObjectType(updatedObject)
+              ? updatedObject
+              : obj;
           })
         );
         closeModal();
@@ -99,11 +90,7 @@ const CrudDataValue = <T extends BeerInterface | BrewerieInterface>({
       .deleteById(id_object)
       .then(() => {
         changeObjects(
-          objects.filter((obj) =>
-            isBeerInterface(obj)
-              ? obj.id_beer !== id_object
-              : obj.id_brewerie !== id_object
-          )
+          objects.filter((obj) => returnIdObjectType(obj) !== id_object)
         );
         closeModal();
       })
@@ -125,77 +112,7 @@ const CrudDataValue = <T extends BeerInterface | BrewerieInterface>({
           </button>
         </div>
         <table className="min-w-full table-auto border-collapse border border-gray-200">
-          <thead>
-            <tr className="bg-gray-100">
-              <th className="border border-gray-300 px-4 py-2 text-left">
-                Name
-              </th>
-              {label === "bières" ? (
-                <>
-                  <th className="border border-gray-300 px-4 py-2 text-left">
-                    ABV
-                  </th>
-                  <th className="border border-gray-300 px-4 py-2 text-left">
-                    Color
-                  </th>
-                  <th className="border border-gray-300 px-4 py-2 text-left">
-                    Description
-                  </th>
-                </>
-              ) : (
-                <th className="border border-gray-300 px-4 py-2 text-left">
-                  Pays
-                </th>
-              )}
-              <th className="border border-gray-300 px-4 py-2 text-center">
-                Actions
-              </th>
-            </tr>
-          </thead>
-          <tbody>
-            {objects.map((obj) => {
-              return (
-                <>
-                  <tr className="hover:bg-gray-50">
-                    <td className="border border-gray-300 px-4 py-2">
-                      {obj.name}
-                    </td>
-                    {isBeerInterface(obj) ? (
-                      <>
-                        <td className="border border-gray-300 px-4 py-2">
-                          {obj.abv}%
-                        </td>
-                        <td className="border border-gray-300 px-4 py-2">
-                          {obj.color}
-                        </td>
-                        <td className="border border-gray-300 px-4 py-2">
-                          {obj.description}
-                        </td>
-                      </>
-                    ) : (
-                      <td className="border border-gray-300 px-4 py-2">
-                        {obj.country}
-                      </td>
-                    )}
-                    <td className="border border-gray-300 px-4 py-2 text-center">
-                      <button
-                        onClick={() => openModal("edit", obj)}
-                        className="text-blue-500 hover:underline mr-4"
-                      >
-                        Edit
-                      </button>
-                      <button
-                        onClick={() => openModal("delete", obj)}
-                        className="text-red-500 hover:underline"
-                      >
-                        Delete
-                      </button>
-                    </td>
-                  </tr>
-                </>
-              );
-            })}
-          </tbody>
+          <FormCrud objects={objects} openModal={openModal} />
         </table>
       </div>
 
