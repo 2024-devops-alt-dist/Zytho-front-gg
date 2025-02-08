@@ -1,25 +1,15 @@
-import { useEffect, useState } from "react";
-import BrewerieService from "../../services/BrewerieService";
+import { useEffect } from "react";
 import BrewerieInterface from "../../entity/BrewerieInterface";
 import CardBrewerie from "./CardBrewerie";
 import Button from "../../components/Button";
+import { useBrewerieStore } from "../../store/useBrewerieStore";
 
 const ListBreweries = () => {
-  const [breweries, setBreweries] = useState<BrewerieInterface[]>([]);
-  const [breweriesService] = useState(new BrewerieService());
+  const { breweries, fetchBreweries } = useBrewerieStore();
 
   useEffect(() => {
-    const fetchBreweries = async () => {
-      try {
-        const breweries = await breweriesService.findAll<BrewerieInterface>();
-        console.log(breweries);
-        setBreweries(breweries);
-      } catch (error) {
-        console.error("Error fetching breweries:", error);
-      }
-    };
     fetchBreweries();
-  }, [breweriesService]);
+  }, []);
 
   return (
     <>
