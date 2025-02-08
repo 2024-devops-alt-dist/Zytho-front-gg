@@ -11,7 +11,7 @@ const ListBreweries = () => {
   useEffect(() => {
     const fetchBreweries = async () => {
       try {
-        const breweries = await breweriesService.findAllBreweries();
+        const breweries = await breweriesService.findAll<BrewerieInterface>();
         console.log(breweries);
         setBreweries(breweries);
       } catch (error) {

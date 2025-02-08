@@ -7,21 +7,20 @@ import CardBrewerie from "./CardBrewerie";
 
 const DetailBrewerie = () => {
   const [brewerie, setBrewerie] = useState<BrewerieInterface>();
-  const [brewerieService] = useState(new BrewerieService());
   const { id } = useParams();
+  const [brewerieService] = useState(new BrewerieService());
 
   useEffect(() => {
-    const fetchBrewerie = async () => {
-      try {
-        const brewerie = await brewerieService.findByIdBrewerie(Number(id));
+    brewerieService
+      .findById<BrewerieInterface>(Number(id))
+      .then((data) => {
+        setBrewerie(data);
         console.log(brewerie);
-        setBrewerie(brewerie);
-      } catch (error) {
-        console.error("Error fetching brewerie:", error);
-      }
-    };
-    fetchBrewerie();
-  }, [brewerieService]);
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  }, [id]);
 
   return (
     brewerie && (

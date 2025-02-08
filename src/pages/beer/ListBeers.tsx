@@ -11,7 +11,7 @@ const ListBeers = ({ idBrewerie }: ListBeersProps) => {
   const [beersService] = useState(new BeerService());
 
   useEffect(() => {
-    beersService.findAllBeers().then((data) => {
+    beersService.findAll<BeerInterface>().then((data) => {
       if (idBrewerie) {
         const beer = data.filter((b) => b.id_brewerie === idBrewerie);
         setBeers(beer);
@@ -19,7 +19,7 @@ const ListBeers = ({ idBrewerie }: ListBeersProps) => {
         setBeers(data);
       }
     });
-  }, [beersService]);
+  }, [beersService, idBrewerie]);
 
   return (
     <>

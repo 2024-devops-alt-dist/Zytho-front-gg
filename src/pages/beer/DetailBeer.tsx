@@ -17,9 +17,11 @@ const DetailBeer = () => {
   useEffect(() => {
     const fetchBeer = async () => {
       try {
-        const beer = await beersService.findByIdBeer(Number(id));
+        const beer = await beersService.findById<BeerInterface>(Number(id));
         setBeer(beer);
-        const brewerie = await brewerieService.findByIdBrewerie(
+        console.log(beer);
+
+        const brewerie = await brewerieService.findById<BrewerieInterface>(
           beer.id_brewerie
         );
         setBrewerie(brewerie);
@@ -29,7 +31,7 @@ const DetailBeer = () => {
     };
     fetchBeer();
     console.log(brewerie);
-  }, [beersService, id]);
+  }, [id]);
 
   return beer && <CardBeer beer={beer} element="detail" />;
 };
