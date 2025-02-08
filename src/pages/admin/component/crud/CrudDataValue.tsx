@@ -7,7 +7,7 @@ import { CategoryInterface } from "../../../../entity/CategoryInterface";
 import FormCrud from "./form/FormCrud";
 import { returnIdObjectType } from "../../../../utils/utils";
 
-interface CrudBeerProps<T> {
+interface CrudDataValueProps<T> {
   label: "brasserie" | "bières" | "categorie";
   service: new () => ServiceInterface<T>;
   objects: T[];
@@ -21,7 +21,7 @@ const CrudDataValue = <
   service,
   objects,
   changeObjects,
-}: CrudBeerProps<T>) => {
+}: CrudDataValueProps<T>) => {
   const [instanceService] = useState(new service());
 
   const [selectedObject, setSelectedObject] = useState<T | null>(null);

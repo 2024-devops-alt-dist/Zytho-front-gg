@@ -1,8 +1,8 @@
 import { useEffect, useState } from "react";
 import { Dropdown, DropdownChangeEvent } from "primereact/dropdown";
-import BeerInterface from "../../../../entity/BeerInterface";
-import BrewerieInterface from "../../../../entity/BrewerieInterface";
-import { CategoryInterface } from "../../../../entity/CategoryInterface";
+import BeerInterface from "../../../../../entity/BeerInterface";
+import BrewerieInterface from "../../../../../entity/BrewerieInterface";
+import { CategoryInterface } from "../../../../../entity/CategoryInterface";
 
 interface MultiSelectProps<T> {
   sendId: (id: number | undefined) => void;
