@@ -5,18 +5,18 @@ import Button from "../../components/Button";
 import { useBrewerieStore } from "../../store/useBrewerieStore";
 
 const ListBreweries = () => {
-  const { breweries, fetchBreweries } = useBrewerieStore();
+  const { breweriesStore, fetchBreweries } = useBrewerieStore();
 
   useEffect(() => {
     fetchBreweries();
-  }, []);
+  }, [breweriesStore]);
 
   return (
     <>
       <h1>Liste des Brasseries</h1>
       <div className="flex flex-col justify-content-center gap-y-16">
-        {breweries &&
-          breweries.map((brewerie: BrewerieInterface) => {
+        {breweriesStore &&
+          breweriesStore.map((brewerie: BrewerieInterface) => {
             return (
               <div key={brewerie.id_brewerie}>
                 <CardBrewerie brewerie={brewerie} />

@@ -1,14 +1,17 @@
 import { create } from "zustand";
-import {
-  BrewerieInterface,
-  BrewerieStoreInterface,
-} from "../entity/BrewerieInterface";
 import BrewerieService from "../services/BrewerieService";
+import BrewerieInterface from "../entity/BrewerieInterface";
 
+interface BrewerieStoreInterface {
+  breweriesStore: BrewerieInterface[];
+  fetchBreweries: () => void;
+  fetchBrewerieById: (id: number) => void;
+  getBrewerieById: (id: number) => BrewerieInterface | null;
+}
 const brewerieService = new BrewerieService();
 
 export const useBrewerieStore = create<BrewerieStoreInterface>((set, get) => ({
-  breweries: [],
+  breweriesStore: [],
   /**
    * Récupère toute les brasserie depuis le service et set le store
    */
@@ -16,7 +19,7 @@ export const useBrewerieStore = create<BrewerieStoreInterface>((set, get) => ({
     try {
       brewerieService
         .findAll()
-        .then((data) => set({ breweries: data as BrewerieInterface[] }));
+        .then((data) => set({ breweriesStore: data as BrewerieInterface[] }));
     } catch (error) {
       console.log(error);
     }
@@ -29,7 +32,7 @@ export const useBrewerieStore = create<BrewerieStoreInterface>((set, get) => ({
     try {
       brewerieService.findById(id).then((res) => {
         set((state) => ({
-          breweries: [...state.breweries, res as BrewerieInterface],
+          breweriesStore: [...state.breweriesStore, res as BrewerieInterface],
         }));
       });
     } catch (error) {
@@ -43,8 +46,9 @@ export const useBrewerieStore = create<BrewerieStoreInterface>((set, get) => ({
    */
   getBrewerieById: (id: number): BrewerieInterface | null => {
     return (
-      get().breweries.find((b: BrewerieInterface) => b.id_brewerie === id) ||
-      null
+      get().breweriesStore.find(
+        (b: BrewerieInterface) => b.id_brewerie === id
+      ) || null
     );
   },
 }));
