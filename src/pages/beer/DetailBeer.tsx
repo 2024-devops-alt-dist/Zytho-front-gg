@@ -1,38 +1,15 @@
-import { useEffect, useState } from "react";
-import BeerInterface from "../../entity/BeerInterface";
-import BeerService from "../../services/BeerService";
-import BrewerieService from "../../services/BrewerieService";
-import BrewerieInterface from "../../entity/BrewerieInterface";
 import CardBeer from "./component/CardBeer";
 import { useParams } from "react-router-dom";
+import { useBeerStore } from "../../store/useBeerStore";
 
 const DetailBeer = () => {
   const { id } = useParams();
-  const [beer, setBeer] = useState<BeerInterface>();
-  const [brewerie, setBrewerie] = useState<BrewerieInterface>();
+  const { getBeerById, fetchBeerById } = useBeerStore();
 
-  const [beersService] = useState(new BeerService());
-  const [brewerieService] = useState(new BrewerieService());
+  const beerFilter = getBeerById(Number(id))
+    ? getBeerById(Number(id))
+    : fetchBeerById(Number(id));
 
-  useEffect(() => {
-    const fetchBeer = async () => {
-      try {
-        const beer = await beersService.findById<BeerInterface>(Number(id));
-        setBeer(beer);
-        console.log(beer);
-
-        const brewerie = await brewerieService.findById<BrewerieInterface>(
-          beer.id_brewerie
-        );
-        setBrewerie(brewerie);
-      } catch (error) {
-        console.log(error);
-      }
-    };
-    fetchBeer();
-    console.log(brewerie);
-  }, [id]);
-
-  return beer && <CardBeer beer={beer} element="detail" />;
+  return beerFilter && <CardBeer beer={beerFilter} element="detail" />;
 };
 export default DetailBeer;

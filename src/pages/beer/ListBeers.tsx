@@ -1,33 +1,28 @@
-import { useEffect, useState } from "react";
-import BeerService from "../../services/BeerService";
+import { useEffect } from "react";
 import BeerInterface from "../../entity/BeerInterface";
 import CardBeer from "./component/CardBeer";
+import { useBeerStore } from "../../store/useBeerStore";
 interface ListBeersProps {
   idBrewerie?: number;
 }
 
 const ListBeers = ({ idBrewerie }: ListBeersProps) => {
-  const [beers, setBeers] = useState<BeerInterface[]>([]);
-  const [beersService] = useState(new BeerService());
+  const { beersStore, fetchBeers } = useBeerStore();
 
   useEffect(() => {
-    beersService.findAll<BeerInterface>().then((data) => {
-      if (idBrewerie) {
-        const beer = data.filter((b) => b.id_brewerie === idBrewerie);
-        setBeers(beer);
-      } else {
-        setBeers(data);
-      }
-    });
-  }, [beersService, idBrewerie]);
+    fetchBeers();
+  }, []);
+
+  const filterBeers = idBrewerie
+    ? beersStore.filter((b) => b.id_brewerie === idBrewerie)
+    : beersStore;
 
   return (
     <>
       <div className="flex flex-col justify-content-center items-center gap-10 w-[80%]">
-        {beers &&
-          beers.map((beer: BeerInterface) => {
-            return <CardBeer beer={beer} key={beer.id_beer} />;
-          })}
+        {filterBeers.map((beer: BeerInterface) => {
+          return <CardBeer beer={beer} key={beer.id_beer} />;
+        })}
       </div>
     </>
   );
