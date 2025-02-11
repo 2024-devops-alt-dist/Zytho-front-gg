@@ -1,6 +1,8 @@
 /** @type {import('tailwindcss').Config} */
 export default {
-  important: true,
+  corePlugins: {
+    preflight: false, // Désactive le reset global de Tailwind
+  },
   content: ["./src/**/*.{js,jsx,ts,tsx}"],
   theme: {
     extend: {

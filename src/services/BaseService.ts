@@ -31,6 +31,7 @@ class BaseService {
       throw new Error("Erreur lors de la mise à jour de la ressource.");
     }
   }
+
   public async create<T>(newObject: T): Promise<T> {
     try {
       const resp = await axios.post(this.apiUrl, newObject);

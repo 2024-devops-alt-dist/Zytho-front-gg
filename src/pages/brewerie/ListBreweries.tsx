@@ -9,7 +9,7 @@ const ListBreweries = () => {
 
   useEffect(() => {
     fetchBreweries();
-  }, [breweriesStore]);
+  }, []);
 
   return (
     <>

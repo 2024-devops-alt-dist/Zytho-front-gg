@@ -27,12 +27,7 @@ const CardBeer = ({ beer, element = "card" }: CardBeerProps) => {
         {element === "detail" && <h4>{beer.id_brewerie}</h4>}
         <TableDataBeer beer={beer} />
         <h4 className="font-light">{""}</h4>
-        <p className="m-0 text-left">
-          Lorem ipsum dolor sit, amet consectetur adipisicing elit. Voluptatum
-          incidunt ipsa sit est ab ratione quibusdam modi consectetur hic
-          consequatur ipsam atque minus autem quod, facere commodi? Et,
-          pariatur? Alias.
-        </p>
+        <p className="m-0 text-left">{beer.description}</p>
         {element === "detail" && <Detailingredient idBeer={beer.id_beer} />}
         <div className="mt-6 w-full">
           <Button
