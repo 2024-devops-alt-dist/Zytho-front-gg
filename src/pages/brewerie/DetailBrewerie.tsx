@@ -2,14 +2,16 @@ import { useParams } from "react-router-dom";
 import ListBeers from "../beer/ListBeers";
 import CardBrewerie from "./CardBrewerie";
 import { useBrewerieStore } from "../../store/useBrewerieStore";
+import { ReactElement } from "react";
 
-const DetailBrewerie = () => {
+const DetailBrewerie = (): ReactElement => {
   const { id } = useParams();
   const { getBrewerieById, fetchBrewerieById } = useBrewerieStore();
 
-  const brewerieFilter = getBrewerieById(Number(id))
-    ? getBrewerieById(Number(id))
-    : fetchBrewerieById(Number(id));
+  const brewerieFilter =
+    getBrewerieById(Number(id)) || fetchBrewerieById(Number(id));
+
+  if (!brewerieFilter) return <div>Aucune brasserie trouvé !</div>;
 
   return (
     brewerieFilter && (
