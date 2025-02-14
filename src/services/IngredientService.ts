@@ -1,9 +1,9 @@
 import axios from "axios";
 import BaseService from "./BaseService";
-
+import { API_BASE_URL } from "../config";
 class IngredientService extends BaseService {
   constructor() {
-    super("/api/ingredients/");
+    super(API_BASE_URL + "/api/ingredients/");
   }
   public async findByBeerIngerdient(id: number) {
     try {

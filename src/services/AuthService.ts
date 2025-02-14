@@ -1,11 +1,14 @@
 import axios from "axios";
-
+import { API_BASE_URL } from "../config";
 class AuthService {
-  private apiUrl: string = "/api/auth/";
+  private apiUrl: string = API_BASE_URL + "/api/auth/";
 
   public async login<T>(newObject: T): Promise<T> {
     try {
-      const resp = await axios.post(this.apiUrl + "login", newObject);
+      const resp = await axios.post(
+        API_BASE_URL + this.apiUrl + "login",
+        newObject
+      );
       console.log(resp);
 
       return resp.data as T;

@@ -3,6 +3,7 @@ export default interface BeerInterface {
   id_brewerie: number;
   id_category: number;
   category_name: string;
+  brewery_name: string;
   id_picture: number;
   name: string;
   abv: number;
