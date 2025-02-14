@@ -1,11 +1,17 @@
 import { useEffect } from "react";
 import BrewerieInterface from "../../entity/BrewerieInterface";
 import CardBrewerie from "./CardBrewerie";
-import Button from "../../components/Button";
 import { useBrewerieStore } from "../../store/useBrewerieStore";
+import { useNavigate } from "react-router-dom";
+import { Button } from "primereact/button";
 
 const ListBreweries = () => {
   const { breweriesStore, fetchBreweries } = useBrewerieStore();
+  const navigate = useNavigate();
+
+  const handleClick = (brewerie: BrewerieInterface) => {
+    navigate(`/breweries/${brewerie.id_brewerie}`);
+  };
 
   useEffect(() => {
     fetchBreweries();
@@ -20,11 +26,13 @@ const ListBreweries = () => {
             return (
               <div key={brewerie.id_brewerie}>
                 <CardBrewerie brewerie={brewerie} />
-                <div className="mt-6 w-[60%] m-auto">
+                <div className="mt-6 w-full">
                   <Button
-                    path={`/breweries/${brewerie.id_brewerie}`}
-                    labelButton="Détails"
-                  />
+                    onClick={() => handleClick}
+                    className="w-full justify-center"
+                  >
+                    Détails
+                  </Button>
                 </div>
               </div>
             );
